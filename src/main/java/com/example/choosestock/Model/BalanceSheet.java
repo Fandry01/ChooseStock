@@ -2,7 +2,7 @@ package com.example.choosestock.Model;
 
 public class BalanceSheet {
     private String fiscalDateEnding;
-    private String totalAssests;
+    private String totalAssets;
     private String totalLiabilities;
 
     public String getFiscalDateEnding() {
@@ -13,12 +13,12 @@ public class BalanceSheet {
         this.fiscalDateEnding = fiscalDateEnding;
     }
 
-    public String getTotalAssests() {
-        return totalAssests;
+    public String getTotalAssets() {
+        return totalAssets;
     }
 
-    public void setTotalAssests(String totalAssests) {
-        this.totalAssests = totalAssests;
+    public void setTotalAssets(String totalAssets) {
+        this.totalAssets = totalAssets;
     }
 
     public String getTotalLiabilities() {

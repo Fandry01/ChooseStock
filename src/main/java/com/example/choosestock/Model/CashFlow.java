@@ -1,24 +1,24 @@
 package com.example.choosestock.Model;
 
 public class CashFlow {
-    private String operatingCashFlow;
-    private String cashflowFromInvestments;
+    private String operatingCashflow;
+    private String cashflowFromInvestment;
     private String cashflowFromFinancing;
 
-    public String getOperatingCashFlow() {
-        return operatingCashFlow;
+    public String getOperatingCashflow() {
+        return operatingCashflow;
     }
 
-    public void setOperatingCashFlow(String operatingCashFlow) {
-        this.operatingCashFlow = operatingCashFlow;
+    public void setOperatingCashflow(String operatingCashFlow) {
+        this.operatingCashflow = operatingCashFlow;
     }
 
-    public String getCashflowFromInvestments() {
-        return cashflowFromInvestments;
+    public String getCashflowFromInvestment() {
+        return cashflowFromInvestment;
     }
 
-    public void setCashflowFromInvestments(String cashflowFromInvestments) {
-        this.cashflowFromInvestments = cashflowFromInvestments;
+    public void setCashflowFromInvestment(String cashflowFromInvestment) {
+        this.cashflowFromInvestment = cashflowFromInvestment;
     }
 
     public String getCashflowFromFinancing() {

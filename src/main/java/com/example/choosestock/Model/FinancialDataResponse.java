@@ -1,23 +1,24 @@
 package com.example.choosestock.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FinancialDataResponse {
-    @JsonProperty("Symbol")
+    @JsonProperty("symbol")
     private String symbol;
     @JsonProperty("annualReports")
     private List<IncomeStatement> annualIncomeStatements;
     @JsonProperty("quarterlyReports")
     private List<IncomeStatement> quarterlyIncomeStatements;
-    @JsonProperty("annualReports")
+
     private List<CashFlow> annualCashFlowReports;
-    @JsonProperty("quarterlyReports")
+
     private List<CashFlow> quarterlyCashFlowReports;
-    @JsonProperty("annualReports")
+
     private List<BalanceSheet> annualBalanceReports;
-    @JsonProperty("quarterlyReports")
+
     private List<BalanceSheet> quarterlyBalanceReports;
 
     public String getSymbol() {
