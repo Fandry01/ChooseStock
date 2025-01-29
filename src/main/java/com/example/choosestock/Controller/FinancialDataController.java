@@ -1,9 +1,6 @@
 package com.example.choosestock.Controller;
 
-import com.example.choosestock.Model.BalanceSheetResponse;
-import com.example.choosestock.Model.CashFlowResponse;
-import com.example.choosestock.Model.FinancialDataResponse;
-import com.example.choosestock.Model.IncomeStatementResponse;
+import com.example.choosestock.Model.*;
 import com.example.choosestock.Service.AlphaAdvantageService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +32,11 @@ public class FinancialDataController {
     public Mono<CashFlowResponse> getCashFlow(@PathVariable String symbol){
         String apiKey ="VJZOP72DUZVBIXH2";
         return alphaAdvantageService.getCashFlow(symbol,apiKey);
+    }
+
+    @GetMapping("/financial-data/{symbol}")
+    public Mono<FinancialDataForAI> getFinancialData(@PathVariable String symbol){
+        return alphaAdvantageService.getFinancialData(symbol);
     }
 
 }

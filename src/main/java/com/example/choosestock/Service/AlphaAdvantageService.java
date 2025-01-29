@@ -60,24 +60,24 @@ public class AlphaAdvantageService {
 
 
 
-//    public Mono<FinancialDataForAI> getFinancialData(String symbol){
-//        String apiKey = "VJZOP72DUZVBIXH2";
-//        Mono<IncomeStatementResponse> incomeStatementResponse = getIncomeStatement(symbol,apiKey);
-//        //Mono<BalanceSheetResponse>  balanceSheetResponse = getBalanceSheet(symbol,apiKey);
-//        Mono<CashFlowResponse> cashFlowResponse = getCashFlow(symbol,apiKey);
-//
-//        return Mono.zip(incomeStatementResponse, balanceSheetResponse,cashFlowResponse).map(tuple ->{
-//             IncomeStatementResponse incomeStatement = tuple.getT1();
-//             BalanceSheetResponse balanceSheet = tuple.getT2();
-//             CashFlowResponse cashFlow = tuple.getT3();
-//
-//             return new FinancialDataForAI(
-//                     symbol,
-//                     incomeStatement.getAnnualIncomeStatements(),
-//                     balanceSheet.getAnnualBalanceReports(),
-//                     cashFlow.getAnnualCashFlowReports()
-//             );
-//        });
-//
-//    }
+    public Mono<FinancialDataForAI> getFinancialData(String symbol){
+        String apiKey = "VJZOP72DUZVBIXH2";
+        Mono<IncomeStatementResponse> incomeStatementResponse = getIncomeStatement(symbol,apiKey);
+        Mono<BalanceSheetResponse>  balanceSheetResponse = getBalanceSheet(symbol,apiKey);
+        Mono<CashFlowResponse> cashFlowResponse = getCashFlow(symbol,apiKey);
+
+        return Mono.zip(incomeStatementResponse, balanceSheetResponse,cashFlowResponse).map(tuple ->{
+             IncomeStatementResponse incomeStatement = tuple.getT1();
+             BalanceSheetResponse balanceSheet = tuple.getT2();
+             CashFlowResponse cashFlow = tuple.getT3();
+
+             return new FinancialDataForAI(
+                     symbol,
+                     incomeStatement.getAnnualIncomeStatements(),
+                     balanceSheet.getAnnualBalanceReports(),
+                     cashFlow.getAnnualCashFlowReports()
+             );
+        });
+
+    }
 }
