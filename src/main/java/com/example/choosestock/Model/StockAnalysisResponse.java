@@ -7,14 +7,19 @@ public class StockAnalysisResponse {
     private String decision;
     private String reason;
     private String explanation;
+    private Company summary;
+    private String competitors;
     private Map<String,String> keyMetrics;
 
-    public StockAnalysisResponse(String symbol, String decision, String reason,String explanation, Map<String, String> keyMetrics) {
+
+    public StockAnalysisResponse(String symbol, String decision, String reason,String explanation,Company summary,String competitors, Map<String, String> keyMetrics) {
         this.symbol = symbol;
         this.decision = decision;
         this.reason = reason;
         this.keyMetrics = keyMetrics;
         this.explanation = explanation;
+        this.competitors = competitors;
+        this.summary = summary;
     }
 
     public String getSymbol() {
@@ -57,6 +62,22 @@ public class StockAnalysisResponse {
         this.explanation = explanation;
     }
 
+    public Company getSummary() {
+        return summary;
+    }
+
+    public void setSummary(Company summary) {
+        this.summary = summary;
+    }
+
+    public String getCompetitors() {
+        return competitors;
+    }
+
+    public void setCompetitors(String competitors) {
+        this.competitors = competitors;
+    }
+
     public String toString() {
         return "StockAnalysisResponse{" +
                 "symbol='" + symbol + '\'' +
@@ -64,6 +85,8 @@ public class StockAnalysisResponse {
                 ", reason='" + reason + '\'' +
                 ", analysisDetails=" + keyMetrics +
                 ", explanation='" + explanation + '\'' +
+                ", summary='" + summary + '\'' +
+                ", competitors='" + competitors + '\'' +
                 '}';
     }
 }

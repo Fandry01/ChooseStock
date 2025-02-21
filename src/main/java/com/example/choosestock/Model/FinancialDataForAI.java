@@ -6,13 +6,13 @@ public class FinancialDataForAI {
     private String symbol;
     private List<IncomeStatement> incomeStatements;
     private List<BalanceSheet> balanceSheets;
-    private List<CashFlow> cashFlows;
+    private Company companySummary;
 
-    public FinancialDataForAI(String symbol, List<IncomeStatement> incomeStatements, List<BalanceSheet> balanceSheets, List<CashFlow> cashFlows) {
+    public FinancialDataForAI(String symbol, List<IncomeStatement> incomeStatements, List<BalanceSheet> balanceSheets, Company companySummary) {
         this.symbol = symbol;
         this.incomeStatements = incomeStatements;
         this.balanceSheets = balanceSheets;
-        this.cashFlows = cashFlows;
+        this.companySummary = companySummary;
     }
 
     public String getSymbol() {
@@ -39,11 +39,11 @@ public class FinancialDataForAI {
         this.balanceSheets = balanceSheets;
     }
 
-    public List<CashFlow> getCashFlows() {
-        return cashFlows;
+    public Company getCompanySummary() {
+        return companySummary;
     }
 
-    public void setCashFlows(List<CashFlow> cashFlows) {
-        this.cashFlows = cashFlows;
+    public void setCompanySummary(Company companySummary) {
+        this.companySummary = companySummary;
     }
 }

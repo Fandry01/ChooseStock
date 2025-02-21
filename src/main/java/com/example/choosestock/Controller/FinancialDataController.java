@@ -39,4 +39,10 @@ public class FinancialDataController {
         return alphaAdvantageService.getFinancialData(symbol);
     }
 
+    @GetMapping("/company-summary/{symbol}")
+    public Mono<Company> getCompanySummary(@PathVariable String symbol){
+        String apiKey ="VJZOP72DUZVBIXH2";
+        return alphaAdvantageService.getCompanySummary(symbol,apiKey);
+    }
+
 }

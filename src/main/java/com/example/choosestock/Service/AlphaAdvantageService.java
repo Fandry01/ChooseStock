@@ -56,26 +56,36 @@ public class AlphaAdvantageService {
                         .flatMap(errorBody -> Mono.error(new RuntimeException("error : "+ errorBody))))
                 .bodyToMono(CashFlowResponse.class);
     }
-
-
+    public Mono<Company> getCompanySummary(String symbol, String apiKey){
+        return webClient.get().uri(uriBuilder ->  uriBuilder
+                .path("/query")
+                .queryParam("function","OVERVIEW")
+                .queryParam("symbol",symbol)
+                .queryParam("apikey",apiKey)
+                .build()).retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,response -> response
+                        .bodyToMono(String.class)
+                        .flatMap(errorBody -> Mono.error(new RuntimeException("error : "+ errorBody))))
+                .bodyToMono(Company.class);
+    }
 
 
     public Mono<FinancialDataForAI> getFinancialData(String symbol){
         String apiKey = "VJZOP72DUZVBIXH2";
         Mono<IncomeStatementResponse> incomeStatementResponse = getIncomeStatement(symbol,apiKey);
         Mono<BalanceSheetResponse>  balanceSheetResponse = getBalanceSheet(symbol,apiKey);
-        Mono<CashFlowResponse> cashFlowResponse = getCashFlow(symbol,apiKey);
+        Mono<Company> companyResponse = getCompanySummary(symbol,apiKey);
 
-        return Mono.zip(incomeStatementResponse, balanceSheetResponse,cashFlowResponse).map(tuple ->{
+        return Mono.zip(incomeStatementResponse, balanceSheetResponse,companyResponse).map(tuple ->{
              IncomeStatementResponse incomeStatement = tuple.getT1();
              BalanceSheetResponse balanceSheet = tuple.getT2();
-             CashFlowResponse cashFlow = tuple.getT3();
+             Company company = tuple.getT3();
 
              return new FinancialDataForAI(
                      symbol,
                      incomeStatement.getAnnualIncomeStatements(),
                      balanceSheet.getAnnualBalanceReports(),
-                     cashFlow.getAnnualCashFlowReports()
+                     company
              );
         });
 
