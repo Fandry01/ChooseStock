@@ -1,5 +1,6 @@
 package com.example.choosestock.Model;
 
+import java.util.List;
 import java.util.Map;
 
 public class StockAnalysisResponse {
@@ -8,11 +9,11 @@ public class StockAnalysisResponse {
     private String reason;
     private String explanation;
     private Company summary;
-    private String competitors;
-    private Map<String,String> keyMetrics;
+    private List<Competitor> competitors;
+    private Map<String,Double> keyMetrics;
 
 
-    public StockAnalysisResponse(String symbol, String decision, String reason,String explanation,Company summary,String competitors, Map<String, String> keyMetrics) {
+    public StockAnalysisResponse(String symbol, String decision, String reason,String explanation,Company summary,List<Competitor> competitors, Map<String, Double> keyMetrics) {
         this.symbol = symbol;
         this.decision = decision;
         this.reason = reason;
@@ -46,11 +47,11 @@ public class StockAnalysisResponse {
         this.reason = reason;
     }
 
-    public Map<String, String> getKeyMetrics() {
+    public Map<String, Double> getKeyMetrics() {
         return keyMetrics;
     }
 
-    public void setKeyMetrics(Map<String, String> keyMetrics) {
+    public void setKeyMetrics(Map<String, Double> keyMetrics) {
         this.keyMetrics = keyMetrics;
     }
 
@@ -70,11 +71,11 @@ public class StockAnalysisResponse {
         this.summary = summary;
     }
 
-    public String getCompetitors() {
+    public List<Competitor> getCompetitors() {
         return competitors;
     }
 
-    public void setCompetitors(String competitors) {
+    public void setCompetitors(List<Competitor> competitors) {
         this.competitors = competitors;
     }
 

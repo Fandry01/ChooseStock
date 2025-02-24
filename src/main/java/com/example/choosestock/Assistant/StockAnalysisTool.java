@@ -1,7 +1,11 @@
 package com.example.choosestock.Assistant;
 
 import com.example.choosestock.Model.Company;
+import com.example.choosestock.Model.Competitor;
+import com.example.choosestock.Model.CompetitorsResponse;
 import com.example.choosestock.Model.StockAnalysisResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.chat.ChatLanguageModel;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -26,15 +31,29 @@ public class StockAnalysisTool {
     }
 
     @Tool("Find Competitors Finds competitors for a given stock ticker with details")
-    public String findCompetitors(@P("Stock ticker symbol")String stockTicker) {
+    public List<Competitor> findCompetitors(@P("Stock ticker symbol")String stockTicker) {
         String prompt = """ 
-                search for three competitors of the company with ticker "%s".
-               Provide:
-               - Name of the competitor
-               - Market share percentage
-               - A short explanation (50 words) why this is a competitor.
-              """.formatted(stockTicker);
-        return model.generate(prompt);
+                Search for three competitors of the company with ticker "%s".
+                Provide the result in **valid JSON format** with the following structure:
+                {
+                "competitors": [
+                 {
+                "name": "Competitor Name",
+                "marketShare": 10,
+                "explanation": "Short explanation of why this company is a competitor."
+                }
+             ]
+             }
+             Ensure the response is **valid JSON only**, without additional text.
+           """.formatted(stockTicker);
+        String jsonResponse = model.generate(prompt);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            CompetitorsResponse response = objectMapper.readValue(jsonResponse, CompetitorsResponse.class);
+            return response.getCompetitors();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error parsing JSON response: " + jsonResponse, e);
+        }
     }
 
     @Tool("Analyze Financial stock data and return a recommendation")
@@ -60,15 +79,15 @@ public class StockAnalysisTool {
         }else {
             decision = "Sell/dont Buy";
         }
-        String explanation =  generateStockExplanation(symbol, decision, revenue, profitMargin, netIncome, totalAssets, totalLiabilities);
-        String competitors = findCompetitors(symbol);
+        String explanation =  generateStockExplanation(symbol, decision, revenue,roundedProfitMargin, roundedNetIncome, totalAssets, totalLiabilities);
+        List<Competitor> competitors = findCompetitors(symbol);
 
         return  new StockAnalysisResponse(symbol,decision,"AI-Based analysis",explanation,summary,competitors, Map.ofEntries(
-                Map.entry("profitMargin",roundedProfitMargin + "%"),
-                Map.entry("TotalAssets",totalAssets + "B"),
-                Map.entry("TotalLiabilities",totalLiabilities + "B"),
-                Map.entry("TotalRevenue",revenue +"B"),
-                Map.entry("netIncome",roundedNetIncome+ "B")
+                Map.entry("profitMargin",roundedProfitMargin),
+                Map.entry("TotalAssets",totalAssets),
+                Map.entry("TotalLiabilities",totalLiabilities),
+                Map.entry("TotalRevenue",revenue ),
+                Map.entry("netIncome",roundedNetIncome)
         ));
     }
 
@@ -77,13 +96,14 @@ public class StockAnalysisTool {
             @P("Stock ticker symbol") String symbol,
             @P("Investment decision") String decision,
             @P("Total revenue in billion USD") double revenue,
-            @P("Profit margin in percentage") double profitMargin,
-            @P("Net income in billion USD") double netIncome,
+            @P("Profit margin in percentage") double roundedProfitMargin,
+            @P("Net income in billion USD") double roundedNetIncome,
             @P("Total assets in billion USD") double totalAssets,
             @P("Total liabilities in billion USD") double totalLiabilities
-    ) {
-        return "Based on the given financial data, the stock " + symbol + " is recommended as a " + decision +
-                " because it has a profit margin of " + profitMargin + "% and a net income of " + netIncome + " billion USD.";
+
+    ) { return "Based on the given financial data, the stock " + symbol + " is recommended as a " + decision +
+            " because it has a profit margin of " + roundedProfitMargin + "% and a net income of " + roundedNetIncome + " billion USD.";
+
     }
 
 }

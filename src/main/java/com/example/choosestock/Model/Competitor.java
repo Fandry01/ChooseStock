@@ -5,6 +5,10 @@ public class Competitor {
     private Double marketShare;
     private String explanation;
 
+    public Competitor() {}
+
+
+
     public Competitor(String name, Double marketShare, String explanation) {
         this.name = name;
         this.marketShare = marketShare;
