@@ -20,5 +20,8 @@ WORKDIR /app
 # Kopieer de gecompileerde JAR naar de uiteindelijke container
 COPY --from=build /app/target/ChooseStock-1.0.0.jar /app/ChooseStock.jar
 
+# Expose de poort 8080 zodat de container deze gebruikt
+EXPOSE 8080
+
 # Start de applicatie
 ENTRYPOINT ["java", "-jar", "/app/ChooseStock.jar"]
