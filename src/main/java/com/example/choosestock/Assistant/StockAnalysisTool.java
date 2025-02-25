@@ -22,7 +22,7 @@ public class StockAnalysisTool {
 
     private final ChatLanguageModel model;
 
-    public StockAnalysisTool(@Value("${langchain4j.open-ai.chat-model.api-key}") String openAIApiKey) {
+    public StockAnalysisTool(@Value("${OPENAI_API_KEY}") String openAIApiKey) {
         this.model = OpenAiChatModel.builder()
                 .apiKey(openAIApiKey)
                 .modelName("gpt-4o-mini")

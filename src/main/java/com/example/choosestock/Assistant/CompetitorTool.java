@@ -15,7 +15,6 @@ private final ChatLanguageModel model;
 private static final Logger LOGGER = LoggerFactory.getLogger(CompetitorTool.class);
 
     public CompetitorTool(@Value("${OPENAI_API_KEY}") String openAIApiKey) {
-        LOGGER.info("OpenAI API Key: {}", openAIApiKey);
         this.model = OpenAiChatModel.builder()
                 .apiKey(openAIApiKey)
                 .modelName("gpt-4o-mini")
