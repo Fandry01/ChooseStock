@@ -3,21 +3,22 @@ FROM maven:3.9.9-amazoncorretto-23-debian AS build
 
 WORKDIR /app
 
-# Copy only necessary files for caching
-COPY pom.xml mvnw ./
-COPY .mvn .mvn
+COPY pom.xml /app/
+RUN mvn dependency:go-offline
 
-# Ensure Maven wrapper is executable
-RUN chmod +x mvnw
+# Kopieer de volledige applicatiebroncode
+COPY src /app/src
 
-# Download dependencies first for caching
-RUN ./mvnw dependency:go-offline
+# Voer de Maven build uit om het JAR-bestand te genereren
+RUN mvn clean package -DskipTests
 
-# Copy rest of the project
-COPY . .
 
-# Build the project
-RUN ./mvnw clean package -DskipTests
+# Gebruik de Amazon Corretto 23 voor de uiteindelijke container
+FROM amazoncorretto:23
 
-# Run the application
-CMD ["java", "-jar", "target/app.jar"]
+WORKDIR /app
+# Kopieer de gecompileerde JAR naar de uiteindelijke container
+COPY --from=build /app/target/*.jar app.jar
+
+# Start de applicatie
+ENTRYPOINT ["java", "-jar", "/app/ChooseStock.jar"]
