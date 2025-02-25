@@ -12,7 +12,7 @@ public class CompetitorTool {
 
 private final ChatLanguageModel model;
 
-    public CompetitorTool(@Value("${langchain4j.open-ai.chat-model.api-key}") String openAIApiKey) {
+    public CompetitorTool(@Value("${OPENAI_API_KEY}") String openAIApiKey) {
         this.model = OpenAiChatModel.builder()
                 .apiKey(openAIApiKey)
                 .modelName("gpt-4o-mini")
