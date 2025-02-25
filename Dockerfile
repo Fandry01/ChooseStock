@@ -18,7 +18,7 @@ FROM amazoncorretto:23
 
 WORKDIR /app
 # Kopieer de gecompileerde JAR naar de uiteindelijke container
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/ChooseStock-1.0.0.jar /app/ChooseStock.jar
 
 # Start de applicatie
 ENTRYPOINT ["java", "-jar", "/app/ChooseStock.jar"]
