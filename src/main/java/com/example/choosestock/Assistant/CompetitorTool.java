@@ -3,7 +3,8 @@ package com.example.choosestock.Assistant;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.model.openai.OpenAiLanguageModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Component;
 public class CompetitorTool {
 
 private final ChatLanguageModel model;
+private static final Logger LOGGER = LoggerFactory.getLogger(CompetitorTool.class);
 
     public CompetitorTool(@Value("${OPENAI_API_KEY}") String openAIApiKey) {
+        LOGGER.info("OpenAI API Key: {}", openAIApiKey);
         this.model = OpenAiChatModel.builder()
                 .apiKey(openAIApiKey)
                 .modelName("gpt-4o-mini")
